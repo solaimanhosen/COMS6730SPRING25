@@ -7,24 +7,29 @@ class BasicBlock(nn.Module):
         super(BasicBlock, self).__init__()
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(out_channels)
+        self.dropout1 = nn.Dropout(p=0.3)  # Dropout after BN1
         self.relu = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(out_channels)
+        self.dropout2 = nn.Dropout(p=0.3)  # Dropout after BN2
 
         self.shortcut = nn.Sequential()
         if stride != 1 or in_channels != out_channels * self.expansion:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_channels, out_channels * self.expansion, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_channels * self.expansion)
+                nn.BatchNorm2d(out_channels * self.expansion),
+                nn.Dropout(p=0.3)  # Dropout after shortcut BN
             )
 
     def forward(self, x):
         residual = self.shortcut(x)
         out = self.conv1(x)
         out = self.bn1(out)
+        out = self.dropout1(out)
         out = self.relu(out)
         out = self.conv2(out)
         out = self.bn2(out)
+        out = self.dropout2(out)
         out += residual
         out = self.relu(out)
         return out
@@ -38,14 +43,17 @@ class BottleneckBlock(nn.Module):
         base_channels = out_channels // expansion
 
         self.bn1 = nn.BatchNorm2d(in_channels)
+        self.dropout1 = nn.Dropout(p=0.3)  # Dropout after BN1
         self.relu1 = nn.ReLU(inplace=True)
         self.conv1 = nn.Conv2d(in_channels, base_channels, kernel_size=1, stride=1, bias=False)
 
         self.bn2 = nn.BatchNorm2d(base_channels)
+        self.dropout2 = nn.Dropout(p=0.3)  # Dropout after BN2
         self.relu2 = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(base_channels, base_channels, kernel_size=3, stride=stride, padding=1, bias=False)
 
         self.bn3 = nn.BatchNorm2d(base_channels)
+        self.dropout3 = nn.Dropout(p=0.3)  # Dropout after BN3
         self.relu3 = nn.ReLU(inplace=True)
         self.conv3 = nn.Conv2d(base_channels, out_channels, kernel_size=1, stride=1, bias=False)
 
@@ -53,20 +61,24 @@ class BottleneckBlock(nn.Module):
         if stride != 1 or in_channels != out_channels:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_channels)
+                nn.BatchNorm2d(out_channels),
+                nn.Dropout(p=0.3)  # Dropout after shortcut BN
             )
 
     def forward(self, x):
         residual = self.shortcut(x)
         out = self.bn1(x)
+        out = self.dropout1(out)
         out = self.relu1(out)
         out = self.conv1(out)
 
         out = self.bn2(out)
+        out = self.dropout2(out)
         out = self.relu2(out)
         out = self.conv2(out)
 
         out = self.bn3(out)
+        out = self.dropout3(out)
         out = self.relu3(out)
         out = self.conv3(out)
 
@@ -91,6 +103,7 @@ class ResNet(nn.Module):
         # Initial layers
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(16)
+        self.dropout_init = nn.Dropout(p=0.3)  # Dropout after initial BN
         self.relu = nn.ReLU(inplace=True)
 
         # Stages
@@ -100,7 +113,7 @@ class ResNet(nn.Module):
 
         # Final layers
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.dropout = nn.Dropout(p=args.drop)  # <-- Added dropout here
+        self.dropout_final = nn.Dropout(p=args.drop)  # Existing dropout before FC
         self.fc = nn.Linear(self.stage_filters[-1], args.num_classes)
 
     def _make_stage(self, in_channels, out_channels, n_blocks, stride):
@@ -113,6 +126,7 @@ class ResNet(nn.Module):
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
+        x = self.dropout_init(x)  # Apply dropout after initial BN
         x = self.relu(x)
 
         x = self.stage1(x)
@@ -121,6 +135,6 @@ class ResNet(nn.Module):
 
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        x = self.dropout(x)  # <-- Apply dropout before FC
+        x = self.dropout_final(x)
         x = self.fc(x)
         return x
