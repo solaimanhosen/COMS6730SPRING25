@@ -20,6 +20,7 @@ def get_args():
 
 if __name__ == '__main__':
     args = get_args()
+    print(args.resnet_version, args.num_epochs)
     set_random(args.seed)
     trainloader, testloader = load_data(args.batch)
     net = ResNet(args)

@@ -100,7 +100,7 @@ class ResNet(nn.Module):
 
         # Final layers
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.dropout = nn.Dropout(p=args.drop)  # <-- Added dropout here
+        #self.dropout = nn.Dropout(p=args.drop)  # <-- Added dropout here
         self.fc = nn.Linear(self.stage_filters[-1], args.num_classes)
 
     def _make_stage(self, in_channels, out_channels, n_blocks, stride):
@@ -121,6 +121,6 @@ class ResNet(nn.Module):
 
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        x = self.dropout(x)  # <-- Apply dropout before FC
+        #x = self.dropout(x)  # <-- Apply dropout before FC
         x = self.fc(x)
         return x
