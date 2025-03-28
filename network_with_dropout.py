@@ -89,14 +89,16 @@ class ResNet(nn.Module):
     def __init__(self, args):
         super(ResNet, self).__init__()
         self.args = args
+
+        self.stage_filters = [64, 128, 256]
         if args.resnet_version == 1:
             self.expansion = BasicBlock.expansion
             self.block = BasicBlock
-            self.stage_filters = [16, 32, 64]
+            # self.stage_filters = [16, 32, 64]
         elif args.resnet_version == 2:
             self.expansion = BottleneckBlock.expansion
             self.block = BottleneckBlock
-            self.stage_filters = [64, 128, 256]
+            # self.stage_filters = [64, 128, 256]
         else:
             raise ValueError("Invalid ResNet version")
 
