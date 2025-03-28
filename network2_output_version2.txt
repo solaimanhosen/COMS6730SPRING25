@@ -1,0 +1,21 @@
+Epoch 0 training loss: 1.785 training accuracy: 33.294%
+Epoch 1 training loss: 1.252 training accuracy: 55.016%
+Epoch 2 training loss: 0.929 training accuracy: 67.560%
+Epoch 3 training loss: 0.742 training accuracy: 74.614%
+Epoch 4 training loss: 0.620 training accuracy: 78.604%
+Epoch 5 training loss: 0.530 training accuracy: 81.570%
+Epoch 6 training loss: 0.453 training accuracy: 84.324%
+Epoch 7 training loss: 0.391 training accuracy: 86.376%
+Epoch 8 training loss: 0.331 training accuracy: 88.378%
+Epoch 9 training loss: 0.279 training accuracy: 90.124%
+Epoch 10 training loss: 0.240 training accuracy: 91.524%
+Epoch 11 training loss: 0.231 training accuracy: 91.816%
+Epoch 12 training loss: 0.188 training accuracy: 93.316%
+Epoch 13 training loss: 0.139 training accuracy: 95.036%
+Epoch 14 training loss: 0.118 training accuracy: 95.860%
+Epoch 15 training loss: 0.106 training accuracy: 96.296%
+Epoch 16 training loss: 0.087 training accuracy: 96.928%
+Epoch 17 training loss: 0.074 training accuracy: 97.416%
+Epoch 18 training loss: 0.059 training accuracy: 97.980%
+Epoch 19 training loss: 0.055 training accuracy: 98.038%
+Accuracy of the network on the test set: 83.28%

@@ -1,6 +1,6 @@
 import torch
 import argparse
-from network import ResNet
+from network2 import ResNet
 from model import set_random, load_data, train, test
 
 
