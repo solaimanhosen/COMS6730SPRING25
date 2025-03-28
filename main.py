@@ -23,9 +23,9 @@ if __name__ == '__main__':
     set_random(args.seed)
     trainloader, testloader = load_data(args.batch)
 
-    for lr in [0.005, 0.01, 0.05]:
-        for drop in [0.1, 0.3, 0.5]:
-            for epochs in [15, 20, 30]:
+    for lr in [0.08, 0.01, 0.05]:
+        for drop in [0.1, 0.3]:
+            for epochs in [30]:
                 args.lr = lr
                 args.drop = drop
                 args.num_epochs = epochs
