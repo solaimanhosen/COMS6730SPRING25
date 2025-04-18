@@ -10,6 +10,9 @@ class GConv(nn.Module):
         super(GConv, self).__init__()
         # #### YOUR CODE HERE
 
+        self.W = nn.Parameter(torch.Tensor(in_dim, out_dim))
+        nn.init.xavier_uniform_(self.W)
+
         # #### YOUR CODE HERE
 
     def forward(self, A, X):
@@ -17,7 +20,12 @@ class GConv(nn.Module):
         # X is the feature matrix
         # #### YOUR CODE HERE
 
+        X = torch.mm(A, X)    # Aggregate neighbor features
+        X = torch.mm(X, self.W)  # Apply linear transformation
+        X = torch.relu(X)      # Apply ReLU activation
+
         return X
+
         # #### YOUR CODE HERE
 
 
