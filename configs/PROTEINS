@@ -1,0 +1,6 @@
+batch_size=64
+learning_rate=0.001
+pool_rates_layers="0.9 0.8 0.7"
+num_clusters_layers="9 8 7"
+graph_conv=GAttn
+graph_pool=GDiffPool
