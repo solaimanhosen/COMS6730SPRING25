@@ -82,11 +82,9 @@ class ResNet(nn.Module):
         if args.resnet_version == 1:
             self.expansion = BasicBlock.expansion
             self.block = BasicBlock
-            # self.stage_filters = [16, 32, 64]
         elif args.resnet_version == 2:
             self.expansion = BottleneckBlock.expansion
             self.block = BottleneckBlock
-            # self.stage_filters = [64, 128, 256]
         else:
             raise ValueError("Invalid ResNet version")
 

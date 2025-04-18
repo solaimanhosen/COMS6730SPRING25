@@ -16,7 +16,6 @@ def get_args():
     args, _ = parser.parse_known_args()
     return args
 
-
 if __name__ == '__main__':
     args = get_args()
     print(args.resnet_version, args.num_epochs)
